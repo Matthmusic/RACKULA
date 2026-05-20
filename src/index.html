@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Racula</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="titlebar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">
+            <img src="../build/racula.ico" alt="" class="brand-logo" />
+          </div>
+          <div class="brand-copy">
+            <p class="brand-name">Racula</p>
+            <p class="brand-tagline">Wrapper local</p>
+          </div>
+        </div>
+
+        <div class="titlebar-center">
+          <p class="target-label">Adresse cible</p>
+          <div class="status-row">
+            <span class="target-url" id="target-url">Chargement...</span>
+            <span class="status-pill status-checking" id="status-pill">
+              <span class="status-dot" id="status-dot"></span>
+              <span id="status-text">Verification...</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="titlebar-actions no-drag">
+          <button class="action-button" id="reload-button" type="button">Recharger</button>
+          <button class="action-button secondary" id="settings-button" type="button">Parametres</button>
+          <button class="window-button" id="minimize-button" type="button" aria-label="Minimiser">-</button>
+          <button class="window-button" id="maximize-button" type="button" aria-label="Maximiser">[]</button>
+          <button class="window-button close" id="close-button" type="button" aria-label="Fermer">x</button>
+        </div>
+      </header>
+
+      <div class="top-banner hidden" id="top-banner" role="status" aria-live="polite"></div>
+
+      <main class="content">
+        <div class="webview-frame hidden" id="webview-frame">
+          <webview
+            id="target-webview"
+            class="target-webview"
+            src="about:blank"
+            partition="persist:racula"
+          ></webview>
+        </div>
+
+        <section class="fallback-panel" id="fallback-panel">
+          <div class="fallback-card">
+            <p class="fallback-eyebrow" id="fallback-eyebrow">Connexion distante</p>
+            <h1 id="fallback-title">Verification de la connexion...</h1>
+            <p class="fallback-copy" id="fallback-copy">
+              Racula verifie si l adresse cible repond avant d afficher la page.
+            </p>
+            <div class="fallback-actions">
+              <button class="primary-button" id="retry-button" type="button">Reessayer</button>
+              <button class="ghost-button" id="fallback-settings-button" type="button">Parametres</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="settings-overlay hidden no-drag" id="settings-overlay" aria-hidden="true">
+      <div class="settings-panel">
+        <div class="settings-header">
+          <div>
+            <p class="settings-eyebrow">Configuration</p>
+            <h2>Adresse cible</h2>
+          </div>
+          <button class="window-button ghost-close" id="settings-close-button" type="button" aria-label="Fermer">
+            x
+          </button>
+        </div>
+
+        <form class="settings-form" id="settings-form">
+          <label class="field">
+            <span class="field-label">URL HTTP ou HTTPS</span>
+            <input
+              id="target-url-input"
+              class="field-input"
+              type="url"
+              inputmode="url"
+              placeholder="http://192.168.1.114:52520"
+              autocomplete="off"
+              spellcheck="false"
+              required
+            />
+          </label>
+
+          <p class="field-hint">
+            La valeur est enregistree localement dans la configuration de l application puis rechargee au prochain demarrage.
+          </p>
+
+          <p class="field-error hidden" id="settings-error"></p>
+
+          <div class="settings-actions">
+            <button class="ghost-button" id="settings-cancel-button" type="button">Annuler</button>
+            <button class="primary-button" id="settings-save-button" type="submit">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="./renderer.js"></script>
+  </body>
+</html>

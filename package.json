@@ -1,0 +1,74 @@
+{
+  "name": "racula",
+  "productName": "Racula",
+  "version": "0.1.0",
+  "description": "Wrapper Electron dedie pour une page web locale avec barre de titre custom et statut de connexion.",
+  "author": "Matthmusic",
+  "private": true,
+  "type": "commonjs",
+  "main": "electron/main.cjs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Matthmusic/Racula.git"
+  },
+  "scripts": {
+    "dev": "npm run electron:dev",
+    "start": "npm run electron:start",
+    "build": "npm run electron:build",
+    "build:win": "npm run electron:build:win",
+    "electron:dev": "cross-env NODE_ENV=development electron .",
+    "electron:start": "electron .",
+    "electron:build": "electron-builder --publish never",
+    "electron:build:win": "electron-builder --win --publish never"
+  },
+  "devDependencies": {
+    "cross-env": "^10.1.0",
+    "electron": "^39.2.7",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.matthmusic.racula",
+    "productName": "Racula",
+    "publish": null,
+    "icon": "racula.ico",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "build/**/*",
+      "electron/**/*",
+      "src/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "racula.ico"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowElevation": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Racula",
+      "artifactName": "Racula-${version}-Setup.${ext}"
+    },
+    "portable": {
+      "artifactName": "Racula-${version}-Portable.${ext}"
+    }
+  }
+}

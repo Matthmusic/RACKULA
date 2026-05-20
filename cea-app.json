@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "app": {
+    "id": "racula",
+    "name": "Racula",
+    "version": "0.1.0",
+    "description": {
+      "short": "Wrapper Electron dedie pour ouvrir une interface web locale avec statut de connexion visible.",
+      "long": "Racula est une application Electron Windows dediee a l ouverture d une page web locale dans une vraie fenetre desktop. Elle integre une barre de titre personnalisee avec logo, statut de connexion temps reel, rechargement manuel, edition locale de l URL cible et mode fallback hors ligne. L application embarque un webview isole pour afficher le service distant tout en gardant une experience plus propre qu un navigateur classique."
+    }
+  },
+  "resources": {
+    "logo": {
+      "path": "build/racula.png",
+      "url": "https://raw.githubusercontent.com/Matthmusic/Racula/main/build/racula.png"
+    },
+    "icon": {
+      "path": "build/racula.ico",
+      "url": "https://raw.githubusercontent.com/Matthmusic/Racula/main/build/racula.ico"
+    }
+  },
+  "detection": {
+    "windows": {
+      "files": [
+        {
+          "path": "%APPDATA%\\Racula\\config.json",
+          "description": "Configuration utilisateur creee des le premier lancement"
+        }
+      ],
+      "directories": [
+        {
+          "path": "%APPDATA%\\Racula",
+          "description": "Dossier de donnees utilisateur Electron"
+        },
+        {
+          "path": "%LOCALAPPDATA%\\Racula",
+          "description": "Cache local eventuel"
+        }
+      ]
+    },
+    "priority": "files"
+  },
+  "metadata": {
+    "author": {
+      "name": "Matthmusic",
+      "url": "https://github.com/Matthmusic"
+    },
+    "category": "Utilitaires",
+    "tags": [
+      "electron",
+      "webview",
+      "wrapper",
+      "desktop",
+      "reseau",
+      "supervision",
+      "local",
+      "cea"
+    ],
+    "repository": {
+      "type": "github",
+      "url": "https://github.com/Matthmusic/Racula",
+      "branch": "main"
+    },
+    "license": "MIT",
+    "compatibility": {
+      "os": [
+        "windows"
+      ],
+      "minVersion": "Windows 10"
+    }
+  },
+  "installation": {
+    "type": "installer",
+    "downloadUrl": "https://github.com/Matthmusic/Racula/releases/latest/download/Racula-0.1.0-Setup.exe"
+  },
+  "changelog": {
+    "0.1.0": {
+      "date": "2026-04-09",
+      "changes": [
+        "Premiere version de Racula",
+        "Fenetre Electron dediee a une page web locale",
+        "Barre de titre custom avec logo, URL cible et statut de connexion",
+        "Verification reseau au demarrage, au reload, a la sauvegarde d URL et toutes les 5 secondes",
+        "Panneau de configuration local pour modifier l adresse cible",
+        "Fallback hors ligne avec reessai manuel",
+        "Build Windows portable et branding avec le logo Racula"
+      ]
+    }
+  }
+}
