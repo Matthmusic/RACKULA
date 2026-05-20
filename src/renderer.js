@@ -44,6 +44,9 @@ const state = {
 }
 
 const elements = {
+  updateBanner: document.getElementById('update-banner'),
+  updateBannerText: document.getElementById('update-banner-text'),
+  updateActionButton: document.getElementById('update-action-button'),
   targetUrl: document.getElementById('target-url'),
   statusPill: document.getElementById('status-pill'),
   statusText: document.getElementById('status-text'),
@@ -382,11 +385,64 @@ function wireEvents() {
   })
 }
 
+const updateState = { phase: 'idle', version: '' }
+
+function renderUpdateBanner() {
+  const { phase, version } = updateState
+  if (phase === 'idle' || phase === 'error') {
+    elements.updateBanner.classList.add('hidden')
+    return
+  }
+  elements.updateBanner.classList.remove('hidden')
+  if (phase === 'available') {
+    elements.updateBannerText.textContent = `Mise à jour v${version} disponible`
+    elements.updateActionButton.textContent = 'Télécharger'
+    elements.updateActionButton.style.display = ''
+    elements.updateActionButton.onclick = () => {
+      updateState.phase = 'downloading'
+      renderUpdateBanner()
+      api.downloadUpdate()
+    }
+  } else if (phase === 'downloading') {
+    elements.updateBannerText.textContent = `Téléchargement en cours…`
+    elements.updateActionButton.style.display = 'none'
+  } else if (phase === 'downloaded') {
+    elements.updateBannerText.textContent = `v${version} prête — redémarrage requis`
+    elements.updateActionButton.textContent = 'Installer et relancer'
+    elements.updateActionButton.style.display = ''
+    elements.updateActionButton.onclick = () => api.installUpdate()
+  }
+}
+
+function handleUpdateEvent(data) {
+  switch (data?.type) {
+    case 'available':
+      updateState.phase = 'available'
+      updateState.version = data.info?.version || ''
+      break
+    case 'progress':
+      updateState.phase = 'downloading'
+      break
+    case 'downloaded':
+      updateState.phase = 'downloaded'
+      updateState.version = data.info?.version || ''
+      break
+    case 'error':
+    case 'not-available':
+      updateState.phase = data.type === 'error' ? 'error' : 'idle'
+      break
+  }
+  renderUpdateBanner()
+}
+
 async function init() {
   if (!api) {
     document.body.innerHTML = '<div style="padding:24px;color:#fff;background:#111">Racula doit etre lance via Electron.</div>'
     return
   }
+
+  api.onUpdateEvent(handleUpdateEvent)
+  api.checkUpdate()
 
   api.onConnectionStatus((status) => {
     handleConnectionStatus(status)

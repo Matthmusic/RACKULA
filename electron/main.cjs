@@ -1,4 +1,5 @@
 const { app, BrowserWindow, globalShortcut, ipcMain, Menu, shell } = require('electron')
+const { autoUpdater } = require('electron-updater')
 const fs = require('fs/promises')
 const path = require('path')
 const http = require('http')
@@ -213,6 +214,17 @@ function scheduleHeartbeat() {
   }, HEARTBEAT_INTERVAL_MS)
 }
 
+function wireAutoUpdater() {
+  if (isDev()) return
+  autoUpdater.autoDownload = false
+  autoUpdater.autoInstallOnAppQuit = true
+  autoUpdater.on('update-available', (info) => sendToRenderer('update-event', { type: 'available', info }))
+  autoUpdater.on('update-not-available', () => sendToRenderer('update-event', { type: 'not-available' }))
+  autoUpdater.on('error', (err) => sendToRenderer('update-event', { type: 'error', message: err.message }))
+  autoUpdater.on('download-progress', (progress) => sendToRenderer('update-event', { type: 'progress', progress }))
+  autoUpdater.on('update-downloaded', (info) => sendToRenderer('update-event', { type: 'downloaded', info }))
+}
+
 function registerWebviewGuards() {
   app.on('web-contents-created', (_event, contents) => {
     if (contents.getType() !== 'webview') {
@@ -318,6 +330,21 @@ ipcMain.handle('window:toggle-maximize', () => {
   return isMaximized
 })
 
+ipcMain.handle('update:check', async () => {
+  if (isDev()) return { status: 'dev' }
+  try {
+    const result = await autoUpdater.checkForUpdates()
+    if (result?.updateInfo?.version && result.updateInfo.version !== app.getVersion()) {
+      return { status: 'available', version: result.updateInfo.version }
+    }
+    return { status: 'up-to-date', version: app.getVersion() }
+  } catch (err) {
+    return { status: 'error', message: String(err) }
+  }
+})
+ipcMain.handle('update:download', async () => { if (!isDev()) await autoUpdater.downloadUpdate() })
+ipcMain.handle('update:install', () => { if (!isDev()) autoUpdater.quitAndInstall() })
+
 ipcMain.handle('window:close', () => {
   if (mainWindow && !mainWindow.isDestroyed()) {
     mainWindow.close()
@@ -334,6 +361,8 @@ app.whenReady().then(async () => {
   registerWebviewGuards()
   createWindow()
   scheduleHeartbeat()
+  wireAutoUpdater()
+  if (!isDev()) autoUpdater.checkForUpdates()
 
   if (isDev()) {
     globalShortcut.register('Control+Shift+I', () => {

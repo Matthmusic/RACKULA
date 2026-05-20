@@ -18,4 +18,8 @@ contextBridge.exposeInMainWorld('racula', {
   onConnectionStatus: (callback) => subscribe('connection-status', callback),
   onConfigUpdated: (callback) => subscribe('config-updated', callback),
   onWindowState: (callback) => subscribe('window-state', callback),
+  checkUpdate: () => ipcRenderer.invoke('update:check'),
+  downloadUpdate: () => ipcRenderer.invoke('update:download'),
+  installUpdate: () => ipcRenderer.invoke('update:install'),
+  onUpdateEvent: (callback) => subscribe('update-event', callback),
 })

@@ -29,7 +29,7 @@
   "build": {
     "appId": "com.matthmusic.racula",
     "productName": "Racula",
-    "publish": null,
+    "publish": [{ "provider": "github", "owner": "Matthmusic", "repo": "RACKULA" }],
     "icon": "racula.ico",
     "directories": {
       "output": "release",
@@ -70,5 +70,8 @@
     "portable": {
       "artifactName": "Racula-${version}-Portable.${ext}"
     }
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.3"
   }
 }
