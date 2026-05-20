@@ -1,7 +1,7 @@
 {
   "name": "racula",
   "productName": "Racula",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Wrapper Electron dedie pour une page web locale avec barre de titre custom et statut de connexion.",
   "author": "Matthmusic",
   "private": true,
