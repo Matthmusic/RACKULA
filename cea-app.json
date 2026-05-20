@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "app": {
     "id": "racula",
-    "name": "Racula",
+    "name": "RACKULA",
     "version": "0.1.0",
     "description": {
       "short": "Wrapper Electron dedie pour ouvrir une interface web locale avec statut de connexion visible.",
