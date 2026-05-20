@@ -43,8 +43,8 @@
   },
   "metadata": {
     "author": {
-      "name": "Matthmusic",
-      "url": "https://github.com/Matthmusic"
+      "name": "Matthieu Maurel",
+      "email": "matthieu.maurel@conception-ea.fr"
     },
     "category": "Utilitaires",
     "tags": [
@@ -59,7 +59,7 @@
     ],
     "repository": {
       "type": "github",
-      "url": "https://github.com/Matthmusic/Racula",
+      "url": "https://github.com/Matthmusic/RACKULA",
       "branch": "main"
     },
     "license": "MIT",
@@ -72,7 +72,7 @@
   },
   "installation": {
     "type": "installer",
-    "downloadUrl": "https://github.com/Matthmusic/Racula/releases/latest/download/Racula-0.1.0-Setup.exe"
+    "downloadUrl": "https://github.com/Matthmusic/RACKULA/releases/latest/download/Racula-0.1.0-Setup.exe"
   },
   "changelog": {
     "0.1.0": {
