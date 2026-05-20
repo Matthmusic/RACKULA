@@ -7,7 +7,7 @@ const https = require('https')
 
 const APP_ID = 'com.matthmusic.racula'
 const DEFAULT_CONFIG = {
-  targetUrl: 'http://192.168.1.114:52520',
+  targetUrl: 'http://192.168.1.114:5002',
 }
 const REQUEST_TIMEOUT_MS = 3000
 const HEARTBEAT_INTERVAL_MS = 5000
